@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visconti Hanedanı - Topluluk Merkezi</title>
+    
+    <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="brand">
+            <img src="assets/logo.jpg" alt="Visconti">
+            VISCONTI<span>HANEDANI</span>
+        </a>
+        
+        <div id="authSection">
+            <button id="loginBtn" class="btn-google" onclick="signIn()">
+                <i class="fab fa-google"></i> Giriş Yap
+            </button>
+            <div id="userMenu" class="user-mini" style="display:none;" onclick="openMyProfile()">
+                <img id="navUserImg" src="">
+                <span id="navUserName" style="font-weight:600; font-size:0.9rem; color:white;"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main>
+            <div class="page-header">
+                <h2 class="page-title"><i class="fas fa-scroll"></i> HANEDAN GÜNDEMİ</h2>
+                <button class="btn-primary" style="width: auto;" onclick="openCreateModal()">
+                    <i class="fas fa-feather-alt"></i> Konu Başlat
+                </button>
+            </div>
+
+            <div id="topicsContainer">
+                <div style="text-align:center; padding:50px; color:var(--text-muted)">
+                    <i class="fas fa-dragon fa-spin fa-3x" style="color:var(--primary); margin-bottom:15px;"></i><br>
+                    Parşömenler Yükleniyor...
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-card profile-preview">
+                <img src="assets/logo.jpg" class="sidebar-logo">
+                <h3>VISCONTI FORUM</h3>
+                <p>Roleplay, Scripting ve Sohbet Platformu</p>
+            </div>
+
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">📜 KURALLAR</h3>
+                <ul class="rule-list">
+                    <li><i class="fas fa-shield-alt"></i> Saygı esastır.</li>
+                    <li><i class="fas fa-code"></i> Kodları blok içine al.</li>
+                    <li><i class="fas fa-ban"></i> Spam yasak.</li>
+                </ul>
+            </div>
+            
+            <div class="discord-widget">
+                <i class="fab fa-discord fa-3x"></i>
+                <div style="font-weight:700; font-family:'Rajdhani'; font-size:1.2rem;">DISCORD</div>
+                <div>Topluluğa Katıl</div>
+            </div>
+        </aside>
+    </div>
+
+    <div id="createModal" class="modal">
+        <div class="modal-content" style="max-width:600px;">
+            <span class="close-btn" onclick="closeModal('createModal')">&times;</span>
+            <div class="modal-body">
+                <h2 class="modal-title">YENİ KONU OLUŞTUR</h2>
+                <form id="createForm">
+                    <div class="form-group">
+                        <label>Konu Başlığı</label>
+                        <input type="text" id="topicTitle" class="form-input" placeholder="Örn: FPS sorunu yaşıyorum..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <textarea id="topicContent" class="form-input" rows="5" placeholder="Detayları buraya yaz..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label style="color:var(--primary)"><i class="fas fa-code"></i> Kod Bloğu (Opsiyonel)</label>
+                        <textarea id="topicCode" class="form-input code-input" rows="4" placeholder="Kodlarını buraya yapıştır..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">YAYINLA</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('detailModal')">&times;</span>
+            <div class="modal-body">
+                <div id="detailContent"></div>
+                <hr class="divider">
+                <h3 style="font-family:'Rajdhani'; margin-bottom:15px;"><i class="far fa-comments"></i> YORUMLAR</h3>
+                <div id="commentsList" style="margin:20px 0;"></div>
+                <form id="commentForm" style="display:flex; gap:10px;">
+                    <input type="text" id="commentInput" class="form-input" placeholder="Bir yanıt yaz..." required>
+                    <button type="submit" class="btn-primary" style="width:auto;"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content" style="max-width:400px; border-top:none;">
+            <span class="close-btn" onclick="closeModal('profileModal')" style="color:white; z-index:20;">&times;</span>
+            <div class="profile-banner"></div>
+            <div class="profile-img-container">
+                <img id="profileImg" src="">
+            </div>
+            <div class="profile-header">
+                <h2 id="profileName">User</h2>
+                <div id="profileBadges"></div>
+            </div>
+            <div class="modal-body">
+                <div class="stats-row">
+                    <div>
+                        <div id="statTopicCount" class="stat-number">0</div>
+                        <div class="stat-label">KONU</div>
+                    </div>
+                    <div>
+                        <div id="statLevel" class="stat-number">1</div>
+                        <div class="stat-label">SEVİYE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-lua.min.js"></script>
+    
+    <script type="module" src="main.js"></script>
+</body>
+</html>
